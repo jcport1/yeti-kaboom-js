@@ -52,20 +52,26 @@ scene("main", () => {
 	const ICICLE_OPEN = 120;
 	const ICICLE_SPEED = 90;
 
-	add([
-		sprite("icicle"),
-		origin("bot"),
-		pos(width(), 120),
-		"icicle",
-	]);
+	// add icicles to the scene every 1.5 seconds using loop
 
-	add([
-		sprite("icicle"),
-		pos(width(), 120 + ICICLE_OPEN),
-		scale(1, -1),
-		origin("bot"),
-		"icicle",
-	]);
+	loop(1.5, () => {
+
+		const icePos = rand(0, height() - ICICLE_OPEN);
+		add([
+			sprite("icicle"),
+			origin("bot"),
+			pos(width(), icePos),
+			"icicle",
+		]);
+	
+		add([
+			sprite("icicle"),
+			pos(width(), icePos + ICICLE_OPEN),
+			scale(1, -1),
+			origin("bot"),
+			"icicle",
+		]);
+	})
 
 	action("icicle", (icicle) => {
 		icicle.move(-ICICLE_SPEED, 0);
