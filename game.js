@@ -37,12 +37,13 @@ scene("main", () => {
         yeti.move(MOVE_SPEED, 0)
     })
 
-    add([
-		rect(width(), 12),
-		pos(0, 280),
-		origin("topleft"),
-		solid(),
-	]);
+	// if yeti falls off the screen restart the game
+	yeti.action(() => {
+		if (yeti.pos.y >= height()) {
+			go("main")
+		}
+	})
+
 
 	const ICICLE_OPEN = 120;
 	const ICICLE_SPEED = 90;
