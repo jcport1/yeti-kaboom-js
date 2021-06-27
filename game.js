@@ -1,9 +1,12 @@
 kaboom({
 	global: true,
+	fullscreen: true,
+	scale: 2,
 });
 
 loadSprite("yeti", "https://i.imgur.com/OqVwAm6.png");
 loadSprite("bg", "https://www.gameartguppy.com/wp-content/uploads/2014/06/feature_winter_background_game_art.jpg");
+loadSprite("pipe")
 
 scene("main", () => {
 
