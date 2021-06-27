@@ -10,6 +10,11 @@ loadSprite("icicle", "https://static.wikia.nocookie.net/kaizomariomaker/images/2
 
 scene("main", () => {
 
+	layers([
+		"game",
+		"ui",
+	], "game");
+
     add([
 		sprite("bg"),
         scale(width() / 240, height() / 240),
@@ -18,6 +23,7 @@ scene("main", () => {
 
     const yeti = add([
 		sprite("yeti"),
+		scale(0.5),
 		pos(80, 80),
         body(),
 	]);
@@ -37,15 +43,22 @@ scene("main", () => {
         yeti.move(MOVE_SPEED, 0)
     })
 
+	add([
+		rect(width(), 12),
+		pos(0, 280),
+		origin("topleft"),
+		solid(),
+	]);
+
 	// if yeti falls off the screen restart the game
 	yeti.action(() => {
 		if (yeti.pos.y >= height()) {
-			go("gameover")
+			go("gameover", score.value)
 		}
 	})
 
 	yeti.collides("icicle", () => {
-		go("gameover")
+		go("gameover", score.value)
 	})
 
 
@@ -54,12 +67,13 @@ scene("main", () => {
 
 	// add icicles to the scene every 1.5 seconds using loop
 
-	loop(1.5, () => {
+	loop(2.5, () => {
 
 		const icePos = rand(0, height() - ICICLE_OPEN);
 		add([
 			sprite("icicle"),
 			origin("bot"),
+			scale(0.5),
 			pos(width(), icePos),
 			"icicle",
 		]);
@@ -70,18 +84,41 @@ scene("main", () => {
 			scale(1, -1),
 			origin("bot"),
 			"icicle",
+			{ passed: false, },
 		]);
 	})
 
 	action("icicle", (icicle) => {
 		icicle.move(-ICICLE_SPEED, 0);
+
+		// if yeti clears the icicle, then add to score
+
+		if (icicle.pos.x + icicle.width <= yeti.pos.x && icicle.passed === false){
+			score.value++;
+			score.text = score.value;
+			icicle.passed = true;
+		}
+
+		//remove icicle from game when out of screen
+
+		if (icicle.pos.x + icicle.width < 0) {
+			destroy(icicle)
+		}
 	})
+
+	const score = add([
+		pos(12, 12),
+		text("0", 32),
+		{
+			value: 0,
+		},
+	]);
 
 });
 
-scene("gameover", () => {
+scene("gameover", (score) => {
 	add([
-		text("you lose!", 24),
+		text(`score: ${score}`, 24),
 		pos(width() / 2, height() / 2),
 		origin("center")
 	]);
