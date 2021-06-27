@@ -40,8 +40,12 @@ scene("main", () => {
 	// if yeti falls off the screen restart the game
 	yeti.action(() => {
 		if (yeti.pos.y >= height()) {
-			go("main")
+			go("gameover")
 		}
+	})
+
+	yeti.collides("icicle", () => {
+		go("gameover")
 	})
 
 
@@ -68,6 +72,18 @@ scene("main", () => {
 	})
 
 });
+
+scene("gameover", () => {
+	add([
+		text("you lose!", 24),
+		pos(width() / 2, height() / 2),
+		origin("center")
+	]);
+
+	keyPress("space", () => {
+		go("main");
+	})
+})
 
 start("main");
 
