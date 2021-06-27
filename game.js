@@ -6,7 +6,7 @@ kaboom({
 
 loadSprite("yeti", "https://i.imgur.com/OqVwAm6.png");
 loadSprite("bg", "https://www.gameartguppy.com/wp-content/uploads/2014/06/feature_winter_background_game_art.jpg");
-loadSprite("pipe")
+loadSprite("icicle", "https://static.wikia.nocookie.net/kaizomariomaker/images/2/23/Icicle.png/revision/latest?cb=20191224173951");
 
 scene("main", () => {
 
@@ -43,6 +43,28 @@ scene("main", () => {
 		origin("topleft"),
 		solid(),
 	]);
+
+	const ICICLE_OPEN = 120;
+	const ICICLE_SPEED = 90;
+
+	add([
+		sprite("icicle"),
+		origin("bot"),
+		pos(width(), 120),
+		"icicle",
+	]);
+
+	add([
+		sprite("icicle"),
+		pos(width(), 120 + ICICLE_OPEN),
+		scale(1, -1),
+		origin("bot"),
+		"icicle",
+	]);
+
+	action("icicle", (icicle) => {
+		icicle.move(-ICICLE_SPEED, 0);
+	})
 
 });
 
